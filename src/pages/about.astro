@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const skills = {
+  'Frontend': ['Vue 3','TypeScript','SCSS','Nuxt','React','Next.js'],
+  'Backend': ['PHP','Node.js','Python','SQL','Go','Rust'],
+  'DevOps': ['Docker','Linux','CI/CD','Git','Nginx','Apache'],
+  'Design': ['Figma','WebGL','GLSL','CSS Animation','Blender'],
+  'Mobile': ['Flutter','Dart','SwiftUI','Kotlin'],
+  'Tools': ['WebAssembly','yt-dlp','HLS.js','Three.js','GSAP'],
+};
+
+const services = [
+  { icon: '⟨/⟩', title: 'Full-Stack Development', desc: 'End-to-end web applications from database design (SQL) to server-side PHP to TypeScript frontends. Polyglot by design.' },
+  { icon: '◈', title: 'UI / UX Design', desc: 'Clean, minimal interfaces with purposeful animation. Designed in Figma, built with SCSS and CSS3.' },
+  { icon: '▣', title: 'WebGL & GLSL', desc: 'Custom vertex and fragment shaders, real-time rendering effects, and procedural visuals for the browser.' },
+  { icon: '⚙', title: 'DevOps & CI/CD', desc: 'Automated deployment pipelines via GitHub Actions, Docker containers, and Linux server administration.' },
+];
+---
+<Layout title="About — SlayerGamerYT" description="About Shaily Chaudhary (SlayerGamerYT) — self-taught full-stack developer, web designer, and content creator." canonical="https://slayergamer.eu.org/about">
+
+  <section class="page-hero section">
+    <div class="wrap">
+      <span class="section__label blink-text">// about_me</span>
+      <h1 class="page-hero__title reveal">About</h1>
+      <p class="page-hero__sub reveal" style="--delay:.1s">Self-taught. Self-driven. Shipping real things.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap about-bio">
+      <div class="about-bio__text reveal reveal--left">
+        <h2 class="section__title" style="margin-bottom:1.25rem">I build things for the web<br/><em>and break them to learn.</em></h2>
+        <p>I'm <strong>Shaily Chaudhary</strong>, known online as <strong>SlayerGamerYT (SGYT)</strong>. A self-taught full-stack developer and designer obsessed with crafting fast, beautiful, and technically deep digital experiences.</p>
+        <p style="margin-top:1rem">When I'm not shipping code, I'm creating content on YouTube and Instagram, reverse-engineering tools, and pushing what's possible in the browser — from WebGL / GLSL shaders to WebAssembly modules.</p>
+        <p style="margin-top:1rem">I work with a polyglot stack spanning <strong>PHP, TypeScript, Python, Lua, Dart</strong> and more — choosing the right tool for each problem rather than defaulting to a single ecosystem.</p>
+        <div class="about-bio__actions">
+          <a href="/contact" class="btn btn--primary">Get In Touch</a>
+          <a href="mailto:admin@slayergamer.eu.org" class="btn btn--outline">Email Directly</a>
+        </div>
+      </div>
+      <div class="about-bio__stats reveal reveal--right">
+        <div class="stat-card"><span class="stat__num" data-count="3">0</span><span class="stat__label">Live Projects</span></div>
+        <div class="stat-card"><span class="stat__num" data-count="25">0</span><span class="stat__label">Technologies</span></div>
+        <div class="stat-card"><span class="stat__num" data-count="100" data-suffix="%">0%</span><span class="stat__label">Commitment</span></div>
+        <div class="stat-card"><span class="stat__num" data-count="2">0</span><span class="stat__label">Years Building</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section skills-section">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <div><span class="section__label blink-text">// tech_stack</span><h2 class="section__title">Skills & Technologies</h2></div>
+      </header>
+      <div class="skill-categories">
+        {Object.entries(skills).map(([cat, items]) => (
+          <div class="skill-cat reveal">
+            <h3 class="skill-cat__title">{cat}</h3>
+            <div class="skills-grid">
+              {items.map((skill, idx) => (
+                <div class="skill-pill" style={`--i:${idx}`}>{skill}</div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <div><span class="section__label blink-text">// what_i_do</span><h2 class="section__title">Services</h2></div>
+      </header>
+      <div class="services-grid">
+        {services.map((s, i) => (
+          <div class="service-card reveal" style={`--delay:${i * 0.1}s`}>
+            <span class="service-card__icon">{s.icon}</span>
+            <h3 class="service-card__title">{s.title}</h3>
+            <p class="service-card__desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

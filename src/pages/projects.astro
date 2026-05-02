@@ -1,0 +1,73 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  { id: 1, name: 'SGYTHUB', year: 2024, url: 'https://sgyt.is-great.org', image: '/sgythub-logo.jpg', desc: 'A self-hosted web platform powered by a polyglot architecture — PHP, TypeScript and WebGL — with an integrated CI/CD pipeline, YouTube downloader, multi-language support, and a cyberpunk-class dark UI.', tags: ['PHP','TypeScript','WebGL','CI/CD','SCSS'] },
+  { id: 2, name: 'SGYTDL', year: 2024, url: 'https://sgyt.is-great.org/downloader', image: '/sgytdl-logo.jpg', desc: 'A precision-engineered server-side media downloader wrapping yt-dlp in a clean web interface. Supports multi-format resolution, queue management, and real-time progress streaming over WebSocket.', tags: ['yt-dlp','Python','WebSocket','SCSS'] },
+  { id: 3, name: 'SGYT VideoPlayer', year: 2025, url: 'https://sgyt.is-great.org/player', image: '/player-logo.jpg', desc: 'A custom-built browser video player with HLS adaptive streaming, Shaka Player integration, chapter markers, and a keyboard-first control scheme designed for power users.', tags: ['HLS.js','Shaka Player','JavaScript','CSS3'] },
+];
+
+const allTags = [...new Set(projects.flatMap(p => p.tags))].sort();
+---
+<Layout title="Projects — SlayerGamerYT" description="All projects by SlayerGamerYT — SGYTHUB, SGYTDL, SGYT VideoPlayer and more." canonical="https://slayergamer.eu.org/projects">
+  <section class="page-hero section">
+    <div class="wrap">
+      <span class="section__label blink-text">// selected_work</span>
+      <h1 class="page-hero__title reveal">Projects</h1>
+      <p class="page-hero__sub reveal" style="--delay:.1s">Everything I've shipped — web platforms, tools, and media experiences.</p>
+    </div>
+  </section>
+
+  <section class="section" id="projects-list">
+    <div class="wrap">
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-btn is-active" data-tag="All">All</button>
+        {allTags.map(tag => <button class="filter-btn" data-tag={tag}>{tag}</button>)}
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        {projects.map((p, i) => (
+          <article class="pcard reveal" style={`--delay:${i * 0.11}s`} data-tags={p.tags.join(',')}>
+            <div class="pcard__img">
+              <img src={p.image} alt={p.name} loading="lazy" width="720" height="450"/>
+              <div class="pcard__overlay" aria-hidden="true">
+                <a href={p.url} target="_blank" rel="noopener noreferrer" class="pcard__visit">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+            <div class="pcard__body">
+              <div class="pcard__meta"><span class="pcard__idx">{String(i + 1).padStart(2, '0')}</span><span class="pcard__year">{p.year}</span></div>
+              <h3 class="pcard__name">{p.name}</h3>
+              <p class="pcard__desc">{p.desc}</p>
+              <ul class="pcard__tags">{p.tags.map(t => <li>{t}</li>)}</ul>
+              <a href={p.url} target="_blank" rel="noopener noreferrer" class="pcard__link">View Live <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 10.5L10.5 1.5M10.5 1.5H4.5M10.5 1.5V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="no-results" id="no-results" style="display:none">No projects match this filter.</p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.pcard[data-tags]');
+  const noResults = document.getElementById('no-results');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = (btn as HTMLElement).dataset.tag!;
+      btns.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      let visible = 0;
+      cards.forEach(card => {
+        const tags = card.dataset.tags!.split(',');
+        const show = tag === 'All' || tags.includes(tag);
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (noResults) noResults.style.display = visible === 0 ? '' : 'none';
+    });
+  });
+</script>

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow API, Swift, and static asset routes
+Disallow: /api/*
+Disallow: /swift/*
+Disallow: /_nuxt/*
+Disallow: /fonts/*
+Disallow: /images/*
+
+Sitemap: https://slayergamer.eu.org/sitemap.xml
+Crawl-delay: 1

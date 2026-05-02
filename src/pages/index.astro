@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  { name: 'SGYTHUB', year: 2024, image: '/sgythub-logo.jpg', url: 'https://sgyt.is-great.org', desc: 'A self-hosted web platform powered by a polyglot architecture — PHP, TypeScript and WebGL — with an integrated CI/CD pipeline, YouTube downloader, multi-language support, and a cyberpunk-class dark UI.', tags: ['PHP','TypeScript','WebGL','CI/CD','SCSS'] },
+  { name: 'SGYTDL', year: 2024, image: '/sgytdl-logo.jpg', url: 'https://sgyt.is-great.org/downloader', desc: 'A precision-engineered server-side media downloader wrapping yt-dlp in a clean web interface. Supports multi-format resolution, queue management, and real-time progress streaming over WebSocket.', tags: ['yt-dlp','Python','WebSocket','SCSS'] },
+  { name: 'SGYT VideoPlayer', year: 2025, image: '/player-logo.jpg', url: 'https://sgyt.is-great.org/player', desc: 'A custom-built browser video player with HLS adaptive streaming, Shaka Player integration, chapter markers, and a keyboard-first control scheme designed for power users.', tags: ['HLS.js','Shaka Player','JavaScript','CSS3'] },
+];
+
+const skills = {
+  'Frontend': ['Vue 3','TypeScript','SCSS','Nuxt'],
+  'Backend': ['PHP','Node.js','Python','SQL'],
+  'DevOps': ['Docker','Linux','CI/CD','Git'],
+  'Design': ['Figma','WebGL','GLSL','CSS Animation'],
+};
+---
+<Layout title="SlayerGamerYT — Full-Stack Developer, Web Designer & Content Creator" description="Portfolio of Shaily Chaudhary (SlayerGamerYT) — Full-Stack Developer, Web Designer, Content Creator & Hacker." canonical="https://slayergamer.eu.org">
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero__inner wrap">
+      <div class="hero__badge"><span class="badge-dot"></span>Available For Work</div>
+      <h1 class="hero__title">
+        <span class="hero__line"><span>Crafting</span></span>
+        <span class="hero__line indent"><span>Unique</span></span>
+        <span class="hero__line"><span>Digital</span></span>
+        <span class="hero__line stroke"><span>Experiences.</span></span>
+      </h1>
+      <p class="hero__sub"><span class="hero__sub-inner">Full-Stack Developer, Web Designer & Content Creator building fast, beautiful digital experiences.</span></p>
+      <div class="hero__actions">
+        <a href="/projects" class="btn btn--primary">See Projects <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="/contact" class="btn btn--outline">Get In Touch</a>
+      </div>
+      <div class="hero__scroll"><span class="hero__scroll-line"></span><span>Scroll</span></div>
+    </div>
+    <div class="hero__glow" aria-hidden="true"></div>
+    <svg class="hero__grid" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><pattern id="g" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M72 0L0 0 0 72" fill="none" stroke="rgba(255,255,255,.022)" stroke-width="1"/></pattern></defs>
+      <rect width="1440" height="900" fill="url(#g)"/>
+      <circle cx="1150" cy="180" r="340" stroke="rgba(255,255,255,.022)" fill="none"/>
+      <circle cx="1150" cy="180" r="210" stroke="rgba(255,255,255,.032)" fill="none"/>
+      <circle cx="1150" cy="180" r="100" stroke="rgba(255,255,255,.04)" fill="none"/>
+    </svg>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker" aria-hidden="true"><div class="ticker__track" id="ticker-track"></div></div>
+
+  <!-- Stats -->
+  <section class="stats section">
+    <div class="wrap">
+      <div class="stats__grid">
+        <div class="stat reveal"><span class="stat__num" data-count="3">0</span><span class="stat__label">Live Projects</span></div>
+        <div class="stat reveal" style="--delay:.08s"><span class="stat__num" data-count="25">0</span><span class="stat__label">Technologies</span></div>
+        <div class="stat reveal" style="--delay:.16s"><span class="stat__num" data-count="100" data-suffix="%">0%</span><span class="stat__label">Commitment</span></div>
+        <div class="stat reveal" style="--delay:.24s"><span class="stat__num" data-count="2">0</span><span class="stat__label">Years Building</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section" id="projects">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <div><span class="section__label">// selected_work</span><h2 class="section__title">Featured Projects</h2></div>
+        <a href="/projects" class="section__more">All Projects <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 10.5L10.5 1.5M10.5 1.5H4.5M10.5 1.5V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </header>
+      <div class="projects-grid">
+        {projects.map((p, i) => (
+          <article class="pcard reveal" style={`--delay:${i * 0.11}s`}>
+            <div class="pcard__img">
+              <img src={p.image} alt={p.name} loading="lazy" width="720" height="450"/>
+              <div class="pcard__overlay" aria-hidden="true">
+                <a href={p.url} target="_blank" rel="noopener noreferrer" class="pcard__visit" aria-label={`Visit ${p.name}`}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 15L15 3M15 3H7M15 3V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+            <div class="pcard__body">
+              <div class="pcard__meta"><span class="pcard__idx">{String(i + 1).padStart(2, '0')}</span><span class="pcard__year">{p.year}</span></div>
+              <h3 class="pcard__name">{p.name}</h3>
+              <p class="pcard__desc">{p.desc}</p>
+              <ul class="pcard__tags">{p.tags.map(t => <li>{t}</li>)}</ul>
+              <a href={p.url} target="_blank" rel="noopener noreferrer" class="pcard__link">View Live <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 10.5L10.5 1.5M10.5 1.5H4.5M10.5 1.5V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- About Strip -->
+  <section class="about-strip section">
+    <div class="wrap about-strip__inner">
+      <div class="about-strip__text reveal reveal--left">
+        <span class="section__label blink-text">// about_me</span>
+        <h2 class="section__title">I build things for the web<br/><em>and break them to learn.</em></h2>
+        <p>I'm <strong>Shaily Chaudhary</strong>, a self-taught full-stack developer and designer obsessed with crafting fast, beautiful, and technically deep digital experiences. When I'm not shipping code, I'm creating content, reverse-engineering tools, and pushing what's possible in the browser.</p>
+        <a href="/about" class="btn btn--outline" style="margin-top:1.75rem">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="about-strip__skills reveal reveal--right">
+        <span class="section__label">// tech_stack</span>
+        {Object.entries(skills).map(([cat, items]) => (
+          <div class="skill-group">
+            <span class="skill-group__label">{cat}</span>
+            <div class="skill-group__pills">{items.map(s => <span class="spill">{s}</span>)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
