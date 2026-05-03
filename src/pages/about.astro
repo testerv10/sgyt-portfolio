@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
 const skills = {
   'Frontend': ['Vue 3','TypeScript','SCSS','Nuxt','React','Next.js'],
   'Backend': ['PHP','Node.js','Python','SQL','Go','Rust'],
@@ -9,12 +8,17 @@ const skills = {
   'Mobile': ['Flutter','Dart','SwiftUI','Kotlin'],
   'Tools': ['WebAssembly','yt-dlp','HLS.js','Three.js','GSAP'],
 };
-
 const services = [
   { icon: '⟨/⟩', title: 'Full-Stack Development', desc: 'End-to-end web applications from database design (SQL) to server-side PHP to TypeScript frontends. Polyglot by design.' },
   { icon: '◈', title: 'UI / UX Design', desc: 'Clean, minimal interfaces with purposeful animation. Designed in Figma, built with SCSS and CSS3.' },
   { icon: '▣', title: 'WebGL & GLSL', desc: 'Custom vertex and fragment shaders, real-time rendering effects, and procedural visuals for the browser.' },
   { icon: '⚙', title: 'DevOps & CI/CD', desc: 'Automated deployment pipelines via GitHub Actions, Docker containers, and Linux server administration.' },
+];
+const timeline = [
+  { year: '2023', title: 'Started Coding', desc: 'First lines of PHP. Built a basic website. Got hooked immediately.' },
+  { year: '2024', title: 'Launched SGYTHUB', desc: 'Shipped a full polyglot platform: PHP, TypeScript, WebGL, CI/CD pipeline.' },
+  { year: '2024', title: 'SGYTDL & VideoPlayer', desc: 'Built production-grade media tools using yt-dlp, HLS.js, and Shaka Player.' },
+  { year: '2025', title: 'Going Deeper', desc: 'Exploring WebAssembly, Rust, and real-time graphics with GLSL shaders.' },
 ];
 ---
 <Layout title="About — SlayerGamerYT" description="About Shaily Chaudhary (SlayerGamerYT) — self-taught full-stack developer, web designer, and content creator." canonical="https://slayergamer.eu.org/about">
@@ -22,11 +26,12 @@ const services = [
   <section class="page-hero section">
     <div class="wrap">
       <span class="section__label blink-text">// about_me</span>
-      <h1 class="page-hero__title reveal">About</h1>
+      <h1 class="page-hero__title reveal glitch" data-text="About">About</h1>
       <p class="page-hero__sub reveal" style="--delay:.1s">Self-taught. Self-driven. Shipping real things.</p>
     </div>
   </section>
 
+  <!-- Bio -->
   <section class="section">
     <div class="wrap about-bio">
       <div class="about-bio__text reveal reveal--left">
@@ -35,8 +40,8 @@ const services = [
         <p style="margin-top:1rem">When I'm not shipping code, I'm creating content on YouTube and Instagram, reverse-engineering tools, and pushing what's possible in the browser — from WebGL / GLSL shaders to WebAssembly modules.</p>
         <p style="margin-top:1rem">I work with a polyglot stack spanning <strong>PHP, TypeScript, Python, Lua, Dart</strong> and more — choosing the right tool for each problem rather than defaulting to a single ecosystem.</p>
         <div class="about-bio__actions">
-          <a href="/contact" class="btn btn--primary">Get In Touch</a>
-          <a href="mailto:admin@slayergamer.eu.org" class="btn btn--outline">Email Directly</a>
+          <a href="/contact" class="btn btn--primary"><span class="btn__shine"></span>Get In Touch <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="mailto:admin@slayergamer.eu.org" class="btn btn--outline"><span class="btn__shine"></span>Email Directly</a>
         </div>
       </div>
       <div class="about-bio__stats reveal reveal--right">
@@ -48,6 +53,29 @@ const services = [
     </div>
   </section>
 
+  <!-- Timeline -->
+  <section class="section" style="border-top:1px solid var(--border)">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <div><span class="section__label blink-text">// journey</span><h2 class="section__title">The Timeline</h2></div>
+      </header>
+      <div class="timeline">
+        {timeline.map((item, i) => (
+          <div class="timeline__item reveal" style={`--delay:${i * 0.12}s`}>
+            <div class="timeline__line" aria-hidden="true"></div>
+            <div class="timeline__dot" aria-hidden="true"></div>
+            <div class="timeline__content">
+              <span class="timeline__year">{item.year}</span>
+              <h3 class="timeline__title">{item.title}</h3>
+              <p class="timeline__desc">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
   <section class="section skills-section">
     <div class="wrap">
       <header class="section__head reveal">
@@ -68,7 +96,8 @@ const services = [
     </div>
   </section>
 
-  <section class="section">
+  <!-- Services -->
+  <section class="section" style="border-top:1px solid var(--border)">
     <div class="wrap">
       <header class="section__head reveal">
         <div><span class="section__label blink-text">// what_i_do</span><h2 class="section__title">Services</h2></div>
@@ -76,7 +105,7 @@ const services = [
       <div class="services-grid">
         {services.map((s, i) => (
           <div class="service-card reveal" style={`--delay:${i * 0.1}s`}>
-            <span class="service-card__icon">{s.icon}</span>
+            <span class="service-card__icon float">{s.icon}</span>
             <h3 class="service-card__title">{s.title}</h3>
             <p class="service-card__desc">{s.desc}</p>
           </div>
@@ -85,3 +114,21 @@ const services = [
     </div>
   </section>
 </Layout>
+
+<style>
+/* Timeline */
+.timeline { display: flex; flex-direction: column; gap: 0; position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 1px; background: linear-gradient(180deg,var(--accent),var(--accent-2),transparent); opacity: .4; }
+.timeline__item { position: relative; padding: 0 0 2.5rem 2rem; display: flex; flex-direction: column; gap: .4rem; }
+.timeline__item:last-child { padding-bottom: 0; }
+.timeline__dot { position: absolute; left: -1.85rem; top: .3rem; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-d); transition: transform .3s var(--spring),box-shadow .3s; }
+.timeline__item:hover .timeline__dot { transform: scale(1.5); box-shadow: 0 0 20px var(--accent); }
+.timeline__line { display: none; }
+.timeline__year { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-family: var(--font-m); }
+.timeline__title { font-family: var(--font-d); font-size: 1.15rem; font-weight: 700; color: var(--text); }
+.timeline__desc { font-size: .875rem; color: var(--dim); line-height: 1.7; max-width: 480px; }
+[data-theme="light"] .timeline::before { opacity: .3; }
+[data-theme="light"] .timeline__dot { box-shadow: 0 0 8px rgba(0,200,83,0.4); }
+[data-theme="light"] .timeline__item:hover .timeline__dot { box-shadow: 0 0 16px rgba(0,200,83,0.5); }
+[data-theme="light"] .timeline__year { color: var(--accent); }
+</style>

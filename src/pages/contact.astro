@@ -6,7 +6,7 @@ import Layout from '../layouts/Layout.astro';
   <section class="page-hero section">
     <div class="wrap">
       <span class="section__label blink-text">// get_in_touch</span>
-      <h1 class="page-hero__title reveal">Contact</h1>
+      <h1 class="page-hero__title reveal glitch" data-text="Contact">Contact</h1>
       <p class="page-hero__sub reveal" style="--delay:.1s">Have a project? Drop a message. I respond to every serious inquiry.</p>
     </div>
   </section>
@@ -17,7 +17,6 @@ import Layout from '../layouts/Layout.astro';
         <h2 class="contact-info__title">Have a project?<br/><span class="stroke-text">Let's make it real.</span></h2>
         <p class="contact-info__sub">Reach out directly or use the form. Whether it's a new build, a collab, or just a question — I'm listening.</p>
         <a href="mailto:admin@slayergamer.eu.org" class="contact-info__email">admin@slayergamer.eu.org</a>
-
         <ul class="contact-socials">
           <li>
             <a href="https://youtube.com/@SGYT_0007" target="_blank" rel="noopener noreferrer" class="social-row">
@@ -43,16 +42,17 @@ import Layout from '../layouts/Layout.astro';
         </ul>
       </div>
 
-      <!-- Contact Form -->
       <div class="reveal reveal--right">
         <form class="contact-form" id="contact-form" novalidate>
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
 
           <div id="form-success" class="form-success" style="display:none" role="status">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18.5" stroke="var(--accent)" stroke-width="1.5"/><path d="M12 20l6 6 10-10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="success-check">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18.5" stroke="var(--accent)" stroke-width="1.5"/><path d="M12 20l6 6 10-10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
             <h3>Message sent!</h3>
             <p>I'll get back to you as soon as possible.</p>
-            <button type="button" class="btn btn--outline" id="reset-btn">Send Another</button>
+            <button type="button" class="btn btn--outline" id="reset-btn"><span class="btn__shine"></span>Send Another</button>
           </div>
 
           <div id="form-error" class="form-error-msg" style="display:none" role="alert">
@@ -108,6 +108,12 @@ import Layout from '../layouts/Layout.astro';
   </section>
 </Layout>
 
+<style>
+.success-check { animation: check-pop .5s var(--spring) forwards; }
+[data-theme="light"] .form-success h3 { color: var(--accent); }
+[data-theme="light"] .form-input option { background: var(--s1); color: var(--text); }
+</style>
+
 <script>
   const WORKER_URL = 'https://sgyt-contact.cshaily38.workers.dev';
 
@@ -123,8 +129,7 @@ import Layout from '../layouts/Layout.astro';
 
   function showErr(id: string, groupId: string, msg: string) {
     const el = document.getElementById(id)!;
-    el.textContent = msg;
-    el.style.display = msg ? '' : 'none';
+    el.textContent = msg; el.style.display = msg ? '' : 'none';
     document.getElementById(groupId)?.classList.toggle('has-error', !!msg);
   }
 
@@ -133,17 +138,11 @@ import Layout from '../layouts/Layout.astro';
     const email = (document.getElementById('fc-email') as HTMLInputElement).value.trim();
     const message = (document.getElementById('fc-message') as HTMLTextAreaElement).value.trim();
     let ok = true;
-
-    if (!name) { showErr('err-name', 'group-name', 'Name is required.'); ok = false; }
-    else showErr('err-name', 'group-name', '');
-
-    if (!email) { showErr('err-email', 'group-email', 'Email is required.'); ok = false; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('err-email', 'group-email', 'Enter a valid email address.'); ok = false; }
-    else showErr('err-email', 'group-email', '');
-
-    if (message.length < 10) { showErr('err-message', 'group-message', 'Message must be at least 10 characters.'); ok = false; }
-    else showErr('err-message', 'group-message', '');
-
+    if (!name) { showErr('err-name','group-name','Name is required.'); ok = false; } else showErr('err-name','group-name','');
+    if (!email) { showErr('err-email','group-email','Email is required.'); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('err-email','group-email','Enter a valid email address.'); ok = false; }
+    else showErr('err-email','group-email','');
+    if (message.length < 10) { showErr('err-message','group-message','Message must be at least 10 characters.'); ok = false; } else showErr('err-message','group-message','');
     return ok;
   }
 
@@ -151,60 +150,29 @@ import Layout from '../layouts/Layout.astro';
     e.preventDefault();
     errorEl.style.display = 'none';
     if (!validate()) return;
-
-    submitBtn.disabled = true;
-    btnText.style.display = 'none';
-    btnLoading.style.display = '';
-
+    submitBtn.disabled = true; btnText.style.display = 'none'; btnLoading.style.display = '';
     const name = (document.getElementById('fc-name') as HTMLInputElement).value.trim();
     const email = (document.getElementById('fc-email') as HTMLInputElement).value.trim();
     const subject = (document.getElementById('fc-subject') as HTMLInputElement).value.trim();
     const message = (document.getElementById('fc-message') as HTMLTextAreaElement).value.trim();
     const budget = (document.getElementById('fc-budget') as HTMLSelectElement).value;
-
     try {
-      const res = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject: subject || 'New message from SGYT Portfolio', message, budget }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: 'Submission failed.' }));
-        throw new Error(err.error || `HTTP ${res.status}`);
-      }
-
-      fieldsEl.style.display = 'none';
-      successEl.style.display = '';
+      const res = await fetch(WORKER_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, subject: subject || 'New message from SGYT Portfolio', message, budget }) });
+      if (!res.ok) { const err = await res.json().catch(() => ({ error: 'Submission failed.' })); throw new Error(err.error || `HTTP ${res.status}`); }
+      fieldsEl.style.display = 'none'; successEl.style.display = '';
     } catch (err: any) {
-      errorText.textContent = err.message?.includes('fetch') ? 'Network error — check your connection.' : (err.message || 'Something went wrong. Please try again.');
+      errorText.textContent = err.message?.includes('fetch') ? 'Network error — check your connection.' : (err.message || 'Something went wrong.');
       errorEl.style.display = '';
-      submitBtn.disabled = false;
-      btnText.style.display = '';
-      btnLoading.style.display = 'none';
+      submitBtn.disabled = false; btnText.style.display = ''; btnLoading.style.display = 'none';
     }
   });
 
   resetBtn.addEventListener('click', () => {
-    form.reset();
-    successEl.style.display = 'none';
-    fieldsEl.style.display = '';
-    submitBtn.disabled = false;
-    btnText.style.display = '';
-    btnLoading.style.display = 'none';
+    form.reset(); successEl.style.display = 'none'; fieldsEl.style.display = '';
+    submitBtn.disabled = false; btnText.style.display = ''; btnLoading.style.display = 'none';
   });
 
-  // Inline validation on blur
-  document.getElementById('fc-name')?.addEventListener('blur', () => {
-    const v = (document.getElementById('fc-name') as HTMLInputElement).value.trim();
-    showErr('err-name', 'group-name', v ? '' : 'Name is required.');
-  });
-  document.getElementById('fc-email')?.addEventListener('blur', () => {
-    const v = (document.getElementById('fc-email') as HTMLInputElement).value.trim();
-    showErr('err-email', 'group-email', !v ? 'Email is required.' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? 'Enter a valid email.' : '');
-  });
-  document.getElementById('fc-message')?.addEventListener('blur', () => {
-    const v = (document.getElementById('fc-message') as HTMLTextAreaElement).value.trim();
-    showErr('err-message', 'group-message', v.length >= 10 ? '' : 'Message must be at least 10 characters.');
-  });
+  document.getElementById('fc-name')?.addEventListener('blur', () => { const v = (document.getElementById('fc-name') as HTMLInputElement).value.trim(); showErr('err-name','group-name',v ? '' : 'Name is required.'); });
+  document.getElementById('fc-email')?.addEventListener('blur', () => { const v = (document.getElementById('fc-email') as HTMLInputElement).value.trim(); showErr('err-email','group-email',!v ? 'Email is required.' : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? 'Enter a valid email.' : ''); });
+  document.getElementById('fc-message')?.addEventListener('blur', () => { const v = (document.getElementById('fc-message') as HTMLTextAreaElement).value.trim(); showErr('err-message','group-message',v.length >= 10 ? '' : 'Message must be at least 10 characters.'); });
 </script>
